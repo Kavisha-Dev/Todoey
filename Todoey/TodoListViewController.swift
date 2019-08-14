@@ -45,13 +45,30 @@ class TodoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true);
     }
     
+    //MARK: - Add a new Item
     
-    
-    
-    
-    
-    
-
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var itemTextField = UITextField();
+        
+        let alert = UIAlertController(title: "Add new Todoey item", message: "", preferredStyle: .alert);
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) {
+            (UIAlertAction) in
+            self.listItem.append(itemTextField.text!);
+            
+            self.tableView.reloadData();
+        }
+        
+        alert.addTextField {
+            (textField) in
+            itemTextField = textField;
+        }
+        
+        alert.addAction(action);
+        present(alert, animated: true, completion: nil);
+        
+    }
 
 }
 
