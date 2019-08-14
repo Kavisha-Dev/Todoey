@@ -11,10 +11,24 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var listItem = ["Find Mike" , "Buy Eggos" , "Run"]
+    
+    let defaults = UserDefaults.standard;
+    //  var tableViewData = [String]();
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let item = defaults.array(forKey: "TodoList") as? [String] {
+            listItem = item;
+        }
+        
+        /*let todoListData = defaults.value(forKey: "TodoList");
+        
+        if let todos = todoListData.self{
+            tableViewData = todos as! [String];
+        }
+        print(tableViewData) */
     }
     
     //MARK: - TableView Datasource methods
@@ -25,6 +39,7 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoListCell", for: indexPath);
+
         cell.textLabel?.text = listItem[indexPath.row];
         return cell;
     }
@@ -32,7 +47,7 @@ class TodoListViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(listItem[indexPath.row]);
+        //print(listItem[indexPath.row]);
          
         if (tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCell.AccessoryType.checkmark) {
             //Remove a checkmark
@@ -56,6 +71,8 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) {
             (UIAlertAction) in
             self.listItem.append(itemTextField.text!);
+            
+            self.defaults.set(self.listItem, forKey: "TodoList")
             
             self.tableView.reloadData();
         }
