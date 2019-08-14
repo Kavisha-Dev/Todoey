@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         print("didFinishLaunchingWithOptions");
         
-        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true));
+        //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true));
         return true
     }
 
