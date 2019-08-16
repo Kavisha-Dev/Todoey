@@ -81,7 +81,7 @@ class TodoListViewController: UITableViewController {
                     item.done = !item.done;
                     
                     //Inorder for the delete to happen
-                    realm.delete(item);
+                    //realm.delete(item);
                 }
             } catch {
                 print("Error updating the done value \(error)");
@@ -123,7 +123,7 @@ class TodoListViewController: UITableViewController {
                     
                     let newItem = Item()
                     newItem.title = itemTextField.text!;
-                    newItem.done = false;
+                    //newItem.done = false;
                     
                     self.selectedCategory?.items.append(newItem)
                     print("saved the data onto Realm items")
@@ -189,50 +189,57 @@ class TodoListViewController: UITableViewController {
 //    }
     
     func loadItemsFromRealm() {
-        listItem = selectedCategory?.items.sorted(byKeyPath: "title" , ascending: true);
+        listItem = selectedCategory?.items.sorted(byKeyPath: "dateCreated" , ascending: false);
         
-        //print("Selected category is \(selectedCategory?.items[0].title)");
+        tableView.reloadData();
     }
 
 }
 
 //Mark: - Search Bar delegate methods
-//extension TodoListViewController : UISearchBarDelegate {
-//
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//        let request : NSFetchRequest<Item> = Item.fetchRequest();
-//
-//        let predicate : NSPredicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        //let categoryPredicate : NSPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!);
-//
-//        //let andPredicate : NSCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, categoryPredicate])
-//
-//        request.predicate = predicate;
-//
-//        let sortDescriptor : NSSortDescriptor = NSSortDescriptor(key: "title", ascending: true);
-//        request.sortDescriptors = [sortDescriptor];
-//
-//        loadItems(with: request)
-//        print(searchBar.text!);
-//    }
-//
-//
-//    //When the text field is cleared out
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//
-//            loadItems();
-//
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder();
-//            }
-//        }
-//    }
-//
-//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        print("cancelled clicked");
-//    }
-//}
+extension TodoListViewController : UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        /*let request : NSFetchRequest<Item> = Item.fetchRequest();
+
+        let predicate : NSPredicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+
+        //let categoryPredicate : NSPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!);
+
+        //let andPredicate : NSCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, categoryPredicate])
+
+        request.predicate = predicate;
+
+        let sortDescriptor : NSSortDescriptor = NSSortDescriptor(key: "title", ascending: true);
+        request.sortDescriptors = [sortDescriptor];
+
+        loadItems(with: request) */
+
+        //Loading with Realm
+        print(searchBar.text!);
+        listItem = listItem?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: false);
+        
+        tableView.reloadData();
+    }
+
+
+    //When the text field is cleared out
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+
+            //loadItems();
+            
+            loadItemsFromRealm();
+
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder();
+            }
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("cancelled clicked");
+    }
+}
 
