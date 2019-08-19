@@ -9,10 +9,10 @@
 import UIKit
 import CoreData
 import RealmSwift
-import SwipeCellKit
+//import SwipeCellKit
 
 
-class CategoryTableViewController: UITableViewController {
+class CategoryTableViewController: SwipeTableViewController {
     
     var listCategory = ["Shopping", "Movie"];
     
@@ -26,29 +26,21 @@ class CategoryTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad();
-        
 //        loadCategories();
-        
         tableView.rowHeight = 80.0
-        
         loadCategoriesFromRealm()
     }
 
     //MARK: - Add TableView Datasource methods
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return categoryList?.count ?? 1;
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell;
-        cell.delegate = self;
-        cell.textLabel?.text = categoryList?[indexPath.row].name ?? "No Catgory Added Yet";
-        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath);
+        cell.textLabel?.text = categoryList?[indexPath.row].name ?? "No Category Added Yet";
         return cell;
     }
-    
     
     //Mark: - TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -56,9 +48,7 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         let destination = segue.destination as! TodoListViewController;
-        
         let indextPath = tableView.indexPathForSelectedRow;
         
         if let path = indextPath {
@@ -66,7 +56,6 @@ class CategoryTableViewController: UITableViewController {
             let cat = categoryList?[row];
             //print("Selected category \(cat.name!)");
             destination.selectedCategory = cat;
-            
             //destination.cat = cat;
         }
     }
@@ -145,10 +134,34 @@ class CategoryTableViewController: UITableViewController {
     func loadCategoriesFromRealm() {
       categoryList = realm.objects(Category.self)
     }
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let list = self.categoryList {
+            
+            let index = indexPath.row;
+            let categoryToBeDeleted = list[index];
+            print("Item that will be deleted is \(categoryToBeDeleted.name)");
+            
+            self.delete(with: categoryToBeDeleted)
+        }
+    }
+    
+    func delete(with category : Category) {
+        do {
+            try self.realm.write {
+                self.realm.delete(category);
+                
+                //print("Category \(category.name) deleted successfully.")
+            }
+        } catch {
+            print("Error ocurred while deleting an item \(error)")
+        }
+        //self.tableView.reloadData();
+    }
 
 }
 
-extension CategoryTableViewController : SwipeTableViewCellDelegate {
+/*extension CategoryTableViewController : SwipeTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
@@ -192,6 +205,6 @@ extension CategoryTableViewController : SwipeTableViewCellDelegate {
         options.transitionStyle = .border
         return options
     }
-}
+}*/
 
 

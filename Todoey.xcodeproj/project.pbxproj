@@ -18,6 +18,7 @@
 		7580A7D823066D09008F9E96 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580A7D723066D09008F9E96 /* Data.swift */; };
 		7580A7DA23067362008F9E96 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580A7D923067362008F9E96 /* Category.swift */; };
 		7580A7DC23067370008F9E96 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580A7DB23067370008F9E96 /* Item.swift */; };
+		7580A7DE230A8427008F9E96 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580A7DD230A8427008F9E96 /* SwipeTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		7580A7D723066D09008F9E96 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		7580A7D923067362008F9E96 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7580A7DB23067370008F9E96 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		7580A7DD230A8427008F9E96 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		814956DF2305162F5C7179A5 /* Pods-Todoey.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Todoey.debug.xcconfig"; path = "Target Support Files/Pods-Todoey/Pods-Todoey.debug.xcconfig"; sourceTree = "<group>"; };
 		D150B0BE6E405B32830EDBBB /* Pods_Todoey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Todoey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -105,6 +107,7 @@
 			children = (
 				7580A7D52305345C008F9E96 /* CategoryTableViewController.swift */,
 				7580A79C2303C435008F9E96 /* TodoListViewController.swift */,
+				7580A7DD230A8427008F9E96 /* SwipeTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7580A7DE230A8427008F9E96 /* SwipeTableViewController.swift in Sources */,
 				7580A79D2303C435008F9E96 /* TodoListViewController.swift in Sources */,
 				7580A7D823066D09008F9E96 /* Data.swift in Sources */,
 				7580A7B32304189F008F9E96 /* DataModel.xcdatamodeld in Sources */,
