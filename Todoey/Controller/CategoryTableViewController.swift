@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import RealmSwift
 //import SwipeCellKit
+import ChameleonFramework
 
 
 class CategoryTableViewController: SwipeTableViewController {
@@ -38,7 +39,17 @@ class CategoryTableViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath);
-        cell.textLabel?.text = categoryList?[indexPath.row].name ?? "No Category Added Yet";
+        
+        //cell.textLabel?.text = categoryList?[indexPath.row].name ?? "No Category Added Yet";
+        
+        if let list = categoryList?[indexPath.row] {
+            cell.textLabel?.text = list.name
+            cell.backgroundColor = HexColor(list.colour);
+        } else {
+            cell.textLabel?.text = "No Category Added Yet";
+            cell.backgroundColor = UIColor.randomFlat;
+        }
+
         return cell;
     }
     
@@ -80,6 +91,7 @@ class CategoryTableViewController: SwipeTableViewController {
             
             let newCategory : Category = Category();
             newCategory.name = userEnteredCategory;
+            newCategory.colour = UIColor.randomFlat.hexValue();
             
             //Do not need to append since its an auto updating container
             //self.categoryList.append(newCategory);
