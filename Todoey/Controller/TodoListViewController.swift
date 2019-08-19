@@ -144,6 +144,7 @@ class TodoListViewController: UITableViewController {
         
     }
     
+    //Save data using Core Data
     func saveData() {
         do {
             try context.save();
@@ -152,6 +153,7 @@ class TodoListViewController: UITableViewController {
             print("error saving data \(error)")
         }
         
+        // Writing to a plist file
         /*let encoder = PropertyListEncoder();
         
         do {
@@ -164,29 +166,30 @@ class TodoListViewController: UITableViewController {
         self.tableView.reloadData();
     }
     
-//    func loadItems(with request : NSFetchRequest<Item> = Item.fetchRequest()) {
-//        //let request : NSFetchRequest<Item> = Item.fetchRequest();
-//
-//        let categoryPredicate : NSPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!);
-//
-//        var predicates : [NSPredicate] = [categoryPredicate];
-//
-//        if let searchPredicate = request.predicate {
-//            predicates.append(searchPredicate);
-//        }
-//
-//        let andPredicate : NSCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates);
-//        request.predicate = andPredicate;
-//
-//        print("Selected category is \(selectedCategory!.name!)")
-//
-//        do {
-//            listItem = try context.fetch(request);
-//        } catch {
-//            print("Error reading the data \(error)")
-//        }
-//        tableView.reloadData();
-//    }
+    //Getting data using Core Data
+    /*func loadItems(with request : NSFetchRequest<Item> = Item.fetchRequest()) {
+        //let request : NSFetchRequest<Item> = Item.fetchRequest();
+
+        let categoryPredicate : NSPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!);
+
+        var predicates : [NSPredicate] = [categoryPredicate];
+
+        if let searchPredicate = request.predicate {
+            predicates.append(searchPredicate);
+        }
+
+        let andPredicate : NSCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates);
+        request.predicate = andPredicate;
+
+        print("Selected category is \(selectedCategory!.name!)")
+
+        do {
+            listItem = try context.fetch(request);
+        } catch {
+            print("Error reading the data \(error)")
+        }
+        tableView.reloadData();
+    }*/
     
     func loadItemsFromRealm() {
         listItem = selectedCategory?.items.sorted(byKeyPath: "dateCreated" , ascending: false);

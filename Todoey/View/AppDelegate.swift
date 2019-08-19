@@ -21,13 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true));
         
         //Prints the Realm default path
-        print(Realm.Configuration.defaultConfiguration.fileURL);
+        //print(Realm.Configuration.defaultConfiguration.fileURL);
         
-//        do {
-//            let realm = try Realm();
-//        } catch {
-//            print("Error initializing realm \(error)")
-//        }
+        do {
+            let realm = try Realm();
+        } catch {
+            print("Error initializing realm \(error)")
+        }
         return true
     }
 
