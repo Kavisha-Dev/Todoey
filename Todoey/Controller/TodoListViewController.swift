@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import RealmSwift
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
     
     //var listItem = [Item]();
     var listItem : Results<Item>?
@@ -29,7 +29,7 @@ class TodoListViewController: UITableViewController {
     
     var selectedCategory : Category? {
         didSet {
-            //loadItems();
+            //loadItems()
             
             loadItemsFromRealm();
         }
@@ -53,16 +53,17 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoListCell", for: indexPath);
         /*let item = listItem[indexPath.row];
         cell.textLabel?.text = item.title;
         cell.accessoryType = item.done == true ? .checkmark : .none; */
         
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "TodoListCell", for: indexPath);
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = listItem?[indexPath.row] {
             cell.textLabel?.text = item.title;
             cell.accessoryType = item.done == true ? .checkmark : .none;
         } else {
-            cell.textLabel?.text = "No todo added yet" ;
+            cell.textLabel?.text = "No item added yet" ;
         }
         return cell;
     }
@@ -71,7 +72,6 @@ class TodoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //context.delete(listItem[indexPath.row])
-        
         //listItem[indexPath.row].done = !listItem[indexPath.row].done;
         
         if let item = listItem?[indexPath.row] {
@@ -91,7 +91,6 @@ class TodoListViewController: UITableViewController {
         //self.saveData();
         
         tableView.reloadData();
-        
         tableView.deselectRow(at: indexPath, animated: true);
     }
     
@@ -195,6 +194,29 @@ class TodoListViewController: UITableViewController {
         listItem = selectedCategory?.items.sorted(byKeyPath: "dateCreated" , ascending: false);
         
         tableView.reloadData();
+    }
+    
+    override func updateModel(at indexPath: IndexPath) {
+        
+        if let list = listItem {
+            
+            let index = indexPath.row;
+            let itemToBeDeleted = list[index];
+            print("Item that will be deleted is \(itemToBeDeleted.title)");
+            
+            self.delete(with: itemToBeDeleted)
+        }
+    }
+    
+    func delete(with item : Item) {
+        do {
+            try self.realm.write {
+                self.realm.delete(item);
+            }
+        } catch {
+            print("Error ocurred while deleting an item \(error)")
+        }
+        //self.tableView.reloadData();
     }
 
 }

@@ -26,8 +26,8 @@ class CategoryTableViewController: SwipeTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad();
-//        loadCategories();
-        tableView.rowHeight = 80.0
+        //loadCategories();
+        //tableView.rowHeight = 80.0
         loadCategoriesFromRealm()
     }
 
