@@ -13,6 +13,7 @@ import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     //var listItem = [Item]();
     var listItem : Results<Item>?
     var filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist");
@@ -48,6 +49,45 @@ class TodoListViewController: SwipeTableViewController {
         }*/
     }
     
+    
+    //MARK:- Set the navigation controller's navigation bar colours just before the view is shown
+    override func viewWillAppear(_ animated: Bool) {
+        if let hexString  = selectedCategory?.colour {
+            
+            //Set the title of the Navigation Controller
+            title = selectedCategory!.name;
+            
+            updateNavBar(withHexCode: hexString)
+        }
+    }
+    
+     //MARK:- Set the navigation controller's navigation bar colours just before the view disappears
+    override func viewWillDisappear(_ animated: Bool) {
+         //Set the original colour
+        updateNavBar(withHexCode: "0096FF")
+    }
+    
+    func updateNavBar(withHexCode hexColourCode : String) {
+        guard let colour = HexColor(hexColourCode) else { fatalError()}
+        
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist yet.")}
+        //Set the NC's bar tint colour (i.e the background)
+        navBar.barTintColor = colour;
+        
+        //Sets the colour of navigation items and bar button items
+        navBar.tintColor = ContrastColorOf(colour, returnFlat: true);
+        
+        //Sets the " title's colour "
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(colour, returnFlat: true)]
+        
+        //If we hadnpt set as "Prefers large Titles" then we would need to set this.
+        navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(colour, returnFlat: true)]
+        
+        //Set the background of the seach bar
+        searchBar.barTintColor = colour
+        
+    }
+    
     //MARK: - TableView Datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listItem?.count ?? 1;
@@ -63,9 +103,8 @@ class TodoListViewController: SwipeTableViewController {
         if let item = listItem?[indexPath.row] {
             cell.textLabel?.text = item.title;
             cell.accessoryType = item.done == true ? .checkmark : .none;
-           // HexColor(selectedCategory!.colour)?.darken(byPercentage: <#T##CGFloat#>)
             
-            if let color = FlatWhite().darken(byPercentage: CGFloat(indexPath.row) / CGFloat(listItem!.count)) {
+            if let color = HexColor(selectedCategory!.colour)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(listItem!.count)) {
                  cell.backgroundColor = color;
                  cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
             }
