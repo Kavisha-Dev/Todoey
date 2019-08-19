@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import RealmSwift
+import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
     
@@ -62,6 +63,13 @@ class TodoListViewController: SwipeTableViewController {
         if let item = listItem?[indexPath.row] {
             cell.textLabel?.text = item.title;
             cell.accessoryType = item.done == true ? .checkmark : .none;
+           // HexColor(selectedCategory!.colour)?.darken(byPercentage: <#T##CGFloat#>)
+            
+            if let color = FlatWhite().darken(byPercentage: CGFloat(indexPath.row) / CGFloat(listItem!.count)) {
+                 cell.backgroundColor = color;
+                 cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
+           
         } else {
             cell.textLabel?.text = "No item added yet" ;
         }
